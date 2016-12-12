@@ -1,0 +1,130 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat|Raleway&subset=latin-ext');
+
+html, body {
+  min-height: 100vh;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  background: #f1f1f1;
+  color: #000;
+  font-family: 'Raleway', sans-serif;
+}
+
+html {
+  background: #FFF176;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Montserrat', sans-serif;
+}
+
+nav, footer {
+  flex-shrink: 0;
+}
+
+.content {
+  flex-grow: 1;
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.padded {
+  padding: 16px;
+}
+
+a {
+  text-decoration: none;
+  color: #2196F3;
+}
+
+a:hover {
+  font-weight: bold;
+  color: #2196F3;
+}
+
+nav {
+  background: #424242;
+  color: #9E9E9E;
+}
+
+nav ul {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  list-style: none;
+}
+
+nav a {
+  padding: 1.25rem 0.5rem;
+  font-size: 1rem;
+  font-weight: bold;
+  text-decoration: none;
+  display: flex;
+  align-items: flex-start;
+  color: #9E9E9E;
+  flex-grow: 1;
+}
+
+nav a:hover {
+  color: #fff;
+}
+
+nav li {
+  flex-grow: 1;
+  justify-content: space-around;
+  display: flex;
+  border-bottom: 0.25rem solid #424242;
+}
+
+nav li:hover {
+  background: #9E9E9E;
+  border-bottom: 0.25rem solid #F06292;
+}
+
+footer {
+  background: #424242;
+  color: #9E9E9E;
+  min-height: 3rem;
+}
+
+.flex {
+  display: flex;
+  justify-content: space-between;
+  vertical-align: middle;
+}
+
+img.avatar {
+  border-radius: 50%;
+  max-height: 19px;
+  vertical-align: middle;
+}
+
+.card {
+  background: #fff;
+  border-radius: 3px;
+  box-shadow: 0 3px 4px rgba(0, 0, 0, 0.3);
+  margin: 20px 0;
+  min-height: 120px;
+  padding: 16px;
+  align-items: center;
+}
+
+.space-around {
+  justify-content: space-around;
+}
