@@ -70,6 +70,14 @@ nav ul {
   list-style: none;
 }
 
+nav ul li > ul {
+  display: none;
+}
+
+nav ul li:hover > ul {
+  display: flex;
+}
+
 nav a {
   padding: 1.25rem 0.5rem;
   font-size: 1rem;
