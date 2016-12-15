@@ -25,6 +25,7 @@ import (
 	"fmt"
 	"github.com/go-playground/log"
 	"github.com/gorilla/mux"
+	"github.com/pkg/errors"
 	"io/ioutil"
 	"mime"
 	"net/http"
@@ -52,7 +53,11 @@ func addRoutes() {
 func indexHandler() http.HandlerFunc {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		path := r.URL.Path
-		if _, err := os.Stat("./client" + path); err == nil {
+		if _, err := os.Stat("./client" + path + "/index.html"); err == nil {
+			serveFile(w, r, "./client"+path+"/index.html")
+		} else if _, err := os.Stat("./client" + path + ".html"); err == nil {
+			serveFile(w, r, "./client"+path+".html")
+		} else if _, err := os.Stat("./client" + path); err == nil {
 			serveFile(w, r, "./client"+path)
 		} else {
 			serveFile(w, r, "./client/index.html")
@@ -64,10 +69,13 @@ func serveFile(w http.ResponseWriter, r *http.Request, path string) {
 	if path == "./client/" {
 		path = "./client/index.html"
 	}
-	content, sum, mod, err := readFile(path)
-	if err != nil {
+	content, sum, mod, code, err := readFile(path)
+	if err != nil && code != http.StatusForbidden {
 		http.Error(w, "Could not read file", http.StatusInternalServerError)
 		fmt.Printf("%s:%s\n", path, err.Error())
+		return
+	} else if code == http.StatusForbidden {
+		forbidden(w, r, err)
 		return
 	}
 	mime := mime.TypeByExtension(filepath.Ext(path))
@@ -83,22 +91,26 @@ func serveFile(w http.ResponseWriter, r *http.Request, path string) {
 	w.Write(content)
 }
 
-func readFile(path string) ([]byte, string, time.Time, error) {
+func readFile(path string) ([]byte, string, time.Time, int, error) {
 	f, err := os.Open(path)
 	if err != nil {
-		return nil, "", time.Now(), err
+		return nil, "", time.Now(), http.StatusInternalServerError, err
 	}
 	defer f.Close()
 
 	stat, err := os.Stat(path)
 	if err != nil {
-		return nil, "", time.Now(), err
+		return nil, "", time.Now(), http.StatusInternalServerError, err
+	}
+
+	if stat.IsDir() {
+		return nil, "", stat.ModTime(), http.StatusForbidden, errors.New("can't serve directory")
 	}
 
 	cont, err := ioutil.ReadAll(f)
 	if err != nil {
-		return nil, "", time.Now(), err
+		return nil, "", time.Now(), http.StatusInternalServerError, err
 	}
 
-	return cont, fmt.Sprintf("%x", sha512.Sum512(cont)), stat.ModTime(), nil
+	return cont, fmt.Sprintf("%x", sha512.Sum512(cont)), stat.ModTime(), http.StatusOK, nil
 }

@@ -70,3 +70,7 @@ func internalError(w http.ResponseWriter, r *http.Request, err error) error {
 func badRequest(w http.ResponseWriter, r *http.Request, err error) error {
 	return httpError(http.StatusBadRequest, w, r, err)
 }
+
+func forbidden(w http.ResponseWriter, r *http.Request, err error) error {
+	return httpError(http.StatusForbidden, w, r, err)
+}
