@@ -38,6 +38,10 @@ function fadeText(id) {
     window.setTimeout(function() {
         text.style.opacity = 1;
 
+        window.setTimeout(function() {
+            text.style.opacity = 0;
+        }, 6000);
+
     }, 1000);
 }
 
