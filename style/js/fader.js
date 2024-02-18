@@ -33,7 +33,12 @@ function Fader(interval, fade, urls) {
 
 function fadeText(id) {
     var text = document.getElementById(id);
-    text.style.opacity = 1;
+    text.style.opacity = 0;
+
+    window.setTimeout(function() {
+        text.style.opacity = 1;
+
+    }, 1000);
 }
 
 function runloop(pos, urls, bottom, top, interval) {
